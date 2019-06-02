@@ -28,15 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
         numbers = new ArrayList<>();
 //      /*Добавление Адаптера для связки ArrayList с ListView*/
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1, numbers);
+        final ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),android.R.layout.simple_list_item_1, numbers);
         listViewNumbers.setAdapter(arrayAdapter);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                for (int i = min; i <count ; i++) {
-                    numbers.add(progress * i);
+                numbers.clear();
+                if (progress < min){
+                    seekBar.setProgress(min);
                 }
+                for (int i = min; i <count ; i++) {
+                    numbers.add(seekBar.getProgress() * i);
+                }
+                arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -49,5 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        seekBar.setProgress(10);
     }
 }
